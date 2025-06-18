@@ -3,9 +3,11 @@ const router = express.Router();
 
 //Controllers
 import { deleteUser, listUser, postUser, readUser, updateRoleUser} from '../controllers/user.js'
+//Middleware
+import { authCheck } from "../middlewares/auth.middleware.js";
 
 //ENDPOINT http://localhost:8000/api/users
-router.get("/users", listUser);
+router.get("/users", authCheck, listUser);
 //ENDPOINT http://localhost:8000/api/user
 router.get("/user", readUser);
 //ENDPOINT http://localhost:8000/api/user

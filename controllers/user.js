@@ -1,6 +1,18 @@
-export const listUser = (req, res) => {
-  //code body
-  res.json({ message: "This is GET Users" });
+import { createError } from "../utils/createError.js";
+
+export const listUser = (req, res, next) => {
+  try {
+    // 1. Check Email
+    if (true) {
+      createError(400, 'Email already in use!')
+      throw new Error('Email already in use!')
+    } else {
+      throw new Error("Password is invalid.")
+    }
+    res.json({ message: "This is GET Users" });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const readUser = (req, res) => {
