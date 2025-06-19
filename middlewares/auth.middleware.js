@@ -1,7 +1,38 @@
+import { createError } from "../utils/createError.js";
+import jwt from "jsonwebtoken";
+
 export const authCheck = (req, res, next) => {
   //code body
-  if (true) {
-    console.log("This is middleware");
-    next();
+  try {
+    //TODO Overviews
+    /*
+    1. Check Header
+    2. Split Token Bearer
+    3. Verify JWT
+    4. Create req.user 
+    */
+
+    //1. Check header
+    const header = req.headers.authorization;
+    //  console.log(header)
+    if (!header) {
+      createError(401, "Token is missing!");
+    }
+    //2. Split Token
+    const token = header.split(" ")[1];
+    // console.log(token);
+
+    //3. Verify Token
+    jwt.verify(token, process.env.SECRET, (error, decode) => {
+      // console.log(error)
+      // console.log(decode)
+      if (error) {
+        createError(401, "Token is invalid!")
+      }
+      req.user = decode;
+      next();
+    })
+  } catch (error) {
+    next(error);
   }
 };
